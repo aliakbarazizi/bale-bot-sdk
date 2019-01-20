@@ -12,7 +12,6 @@
             "email": "aliakbar.azizi20@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "BaleBot\\": "src/"
