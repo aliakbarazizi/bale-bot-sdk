@@ -1,14 +1,16 @@
 <?php
 
 
-namespace Social;
+namespace BaleBot;
 
 
+use BaleBot\Model\SendMessage;
+use BaleBot\Model\Text;
 use GuzzleHttp\Client;
 
 class Api
 {
-	private $_api = "https://apitest.bale.ai/v1/bots/http/";
+	const URL = "https://apitest.bale.ai/v1/bots/http/";
 	
 	private $_token;
 	
@@ -21,44 +23,36 @@ class Api
 	{
 		$this->_token = $api_token;
 		
-		$this->_client = new Client();
+		$this->_client = new Client([
+			'http_errors' => false,
+			'verify' => false,
+			'headers' => [
+				'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0'
+			]
+		]);
 	}
 	
-	
-	
-	protected function sendRequest($model, $params = [])
+	public function getToken()
 	{
-		/* @var $class Response\Base */
-		$class = new $model();
+		return $this->_token;
+	}
+	
+	/**
+	 * @return Client
+	 */
+	public function getClient()
+	{
+		return $this->_client;
+	}
+	
+	public function sendTextMessage($text, $nickName)
+	{
+		$message = new SendMessage();
+		$message->message = new Text();
+		$message->message->text = $text;
+		$message->nickName = $nickName;
 		
-		$data = '';
 		
-		if ($class->tokenRequired)
-		{
-			$data = "/luser/{$this->_username}/ltoken/{$this->_token}";
-		}
-		
-		foreach ($params as $name => $value)
-		{
-			$data .= '/' . $name . "/" . urlencode($value);
-		}
-		
-		$request = new Request("GET", $this->url . $class->method . $data);
-		
-		$response = $this->_client->send($request, ['timeout' => 25]);
-		
-		
-		$r = json_decode($response->getBody(), true);
-		
-		if ($response->getStatusCode() == 200 && $r[$class->method]['type'] != 'error')
-		{
-			$class->setAttributes($r[$class->method]);
-		}
-		else
-		{
-			throw new InvalidParamException($r[$class->method]['value']);
-		}
-		
-		return $class;
+		return Request::make($this, 'messaging', $message)->response();
 	}
 }
