@@ -1,0 +1,21 @@
+{
+    "name": "aliazizi/bale-bot-sdk",
+    "type": "library",
+    "require": {
+        "php": ">=5.5",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ali Akbar Azizi",
+            "email": "aliakbar.azizi20@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "BaleBot\\": "src/"
+        }
+    }
+}
