@@ -9,6 +9,7 @@ namespace BaleBot;
  *
  * @property string $id
  * @property string $service
+ * @property mixed $body
  */
 class Response extends Model
 {
@@ -46,5 +47,21 @@ class Response extends Model
 		$json = parent::asArray();
 		$json['id'] = $this->id;
 		return $json;
+	}
+	
+	/**
+	 * @param $data
+	 * @param null $body
+	 * @return static
+	 */
+	public static function fromArray($data, $body = null)
+	{
+		$request = parent::fromArray($data);
+		
+		if ($body)
+		{
+			$request->_attributes['body'] = new $body($request->_attributes['body']);
+		}
+		return $request;
 	}
 }

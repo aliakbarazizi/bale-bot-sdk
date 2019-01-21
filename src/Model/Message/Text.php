@@ -1,10 +1,9 @@
 <?php
 
 
-namespace BaleBot\Model;
+namespace BaleBot\Model\Message;
 
-
-use BaleBot\Model;
+use BaleBot\Model\Message;
 
 /**
  * Class Text
@@ -12,7 +11,7 @@ use BaleBot\Model;
  *
  * @property string $text
  */
-class Text extends Model
+class Text extends Message
 {
 	
 }

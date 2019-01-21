@@ -3,7 +3,6 @@
 
 namespace BaleBot;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Runner\Exception;
 
@@ -23,16 +22,10 @@ class Request extends Model
 	protected $_service;
 	
 	/**
-	 * @var Api
-	 */
-	protected $_api;
-	
-	/**
 	 * Request constructor.
-	 * @param Api $api
 	 * @param null $_attributes
 	 */
-	public function __construct($api, $_attributes = null)
+	public function __construct($_attributes = null)
 	{
 		if (isset($_attributes['id']))
 		{
@@ -45,8 +38,6 @@ class Request extends Model
 			$this->_service = $_attributes['service'];
 			unset($_attributes['service']);
 		}
-		
-		$this->_api = $api;
 		
 		parent::__construct($_attributes);
 	}
@@ -86,45 +77,50 @@ class Request extends Model
 	}
 	
 	/**
+	 * @param Api $api
+	 * @param $response
 	 * @return Response
 	 * @throws GuzzleException
 	 */
-	public function response()
+	public function response($api, $response)
 	{
-		return $this->sendRequest();
+		return $this->sendRequest($api, $response);
 	}
 	
 	/**
-	 * @param $api
 	 * @param $service
-	 * @param Api $model
+	 * @param Model $model
 	 * @return Request
 	 */
-	public static function make($api, $service, $model)
+	public static function make($service, $model)
 	{
-		return new self($api, ['body' => $model,'service' => $service]);
+		return new self(['body' => $model,'service' => $service]);
 	}
 	
-	
-	protected function sendRequest()
+	/**
+	 * @param Api $api
+	 * @param $responseClass
+	 * @return Response
+	 * @throws GuzzleException
+	 */
+	protected function sendRequest($api, $responseClass)
 	{
-		$url = Api::URL . $this->_api->getToken();
+		$url = Api::URL . $api->getToken();
 		
 		$request = new \GuzzleHttp\Psr7\Request("POST", $url, ['Content-Type' => 'application/json'], $this->asJson());
 		
 		try
 		{
-			echo $this->asJson();
-			
-			$response = $this->_api->getClient()->send($request, ['timeout' => 25]);
+			$response = $api->getClient()->send($request, ['timeout' => 25]);
 			
 			$json = json_decode($response->getBody()->getContents(), true);
 			
 			if (json_last_error() == JSON_ERROR_NONE)
 			{
-				return Response::fromArray($json);
+				return Response::fromArray($json, $responseClass);
 			}
 			
+			echo '***';
 			echo $response->getBody();
 			
 			throw new Exception($response->getBody()->getContents());

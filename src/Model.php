@@ -27,10 +27,11 @@ abstract class Model implements \JsonSerializable
 				$this->_type = $_attributes['$type'];
 				unset($_attributes['$type']);
 			}
+			
+			$this->_attributes = array_merge($this->_attributes, $_attributes);
 		}
-		$this->_attributes = array_merge($this->_attributes, $_attributes);
 		
-		if ($this->_type == null)
+		if ($this->_type === null)
 		{
 			$this->_type = substr(static::class, strrpos(static::class, '\\') + 1);
 		}
@@ -50,7 +51,7 @@ abstract class Model implements \JsonSerializable
 			return $this->_attributes[$name];
 		}
 		
-		if (isset($this->_relations[$name]))
+		if (isset($this->relations[$name]))
 		{
 			return $this->_attributes[$name] = new $this->relations[$name];
 		}
@@ -88,7 +89,7 @@ abstract class Model implements \JsonSerializable
 	
 	public function asArray()
 	{
-		return array_merge(['$type' => $this->_type], $this->_attributes);
+		return $this->_type !== false ? array_merge(['$type' => $this->_type], $this->_attributes) : $this->_attributes;
 	}
 	
 	/**
@@ -110,11 +111,21 @@ abstract class Model implements \JsonSerializable
 			if (isset($value['$type']))
 			{
 				$modelClass = '\\BaleBot\\Model\\' . $value['$type'];
+				if (!class_exists($modelClass))
+				{
+					$modelClass = '\\BaleBot\\Model\\' . ucfirst($key) . '\\' . $value['$type'];
+				}
+				
 				/* @var $modelClass Model */
 				$data[$key] = $modelClass::fromArray($value);
 			}
 		}
 		
+		return static::create($data);
+	}
+	
+	public static function create($data = [])
+	{
 		$model = new static($data);
 		
 		return $model;
