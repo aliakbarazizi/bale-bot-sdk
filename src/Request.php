@@ -4,7 +4,6 @@
 namespace BaleBot;
 
 use GuzzleHttp\Exception\GuzzleException;
-use PHPUnit\Runner\Exception;
 
 /**
  * Class Request
@@ -101,6 +100,7 @@ class Request extends Model
 	 * @param Api $api
 	 * @param $responseClass
 	 * @return Response
+	 * @throws \Exception
 	 * @throws GuzzleException
 	 */
 	protected function sendRequest($api, $responseClass)
@@ -120,12 +120,9 @@ class Request extends Model
 				return Response::fromArray($json, $responseClass);
 			}
 			
-			echo '***';
-			echo $response->getBody();
-			
-			throw new Exception($response->getBody()->getContents());
+			throw new \Exception($response->getBody()->getContents());
 		}
-		catch (GuzzleException $e)
+		catch (\Exception $e)
 		{
 			throw $e;
 		}
