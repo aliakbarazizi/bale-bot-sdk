@@ -3,9 +3,6 @@
 
 namespace BaleBot\Model\Helper;
 
-
-use BaleBot\Model;
-
 class VideoHelper
 {
 	public $duration;
@@ -19,12 +16,9 @@ class VideoHelper
 	 */
 	private $_video;
 	
-	public function __construct($filename)
+	public function __construct($filename, $options = [])
 	{
-		$ffmpeg = \FFMpeg\FFMpeg::create([
-			'ffmpeg.binaries'  => 'c:\ffmpeg\ffmpeg.exe',
-			'ffprobe.binaries' => 'c:\ffmpeg\ffprobe.exe'
-		]);
+		$ffmpeg = \FFMpeg\FFMpeg::create($options);
 		$this->_video = $ffmpeg->open($filename);
 		
 		$this->duration = $this->_video->getStreams()

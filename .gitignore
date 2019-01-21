@@ -1,0 +1,9 @@
+# Ignore Git here
+.git
+.idea
+vendor
+composer.lock
+composer.phar
+
+# But not these files...
+!.gitignore

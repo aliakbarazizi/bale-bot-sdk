@@ -28,6 +28,8 @@ class Api
 	 */
 	private $_client;
 	
+	public $ffmpegOptions = [];
+	
 	public function __construct($api_token)
 	{
 		$this->_token = $api_token;
@@ -108,7 +110,7 @@ class Api
 	 */
 	public function sendVideoMessage($filename, $nickName, $caption = null)
 	{
-		$helper = new VideoHelper($filename);
+		$helper = new VideoHelper($filename, $this->ffmpegOptions);
 		
 		$message = new SendVideoMessage();
 		$message->nickName = $nickName;
