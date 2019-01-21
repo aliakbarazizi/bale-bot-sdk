@@ -32,9 +32,9 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Example
 ```php
-$api->sendTextMessage('Message','to channel name without @')
-$api->sendPhotoMessage('filepath,'to channel name without @','Caption')
-$api->sendVideoMessage('filepath,'to channel name without @','Caption')
+$api->sendTextMessage('Message','to channel name without at sign')
+$api->sendPhotoMessage('filepath,'to channel name without at sign','Caption')
+$api->sendVideoMessage('filepath,'to channel name without at sign','Caption')
 ```
 
 ## Contributing
@@ -54,5 +54,5 @@ See also the list of [contributors](https://github.com/aliazizi/project/contribu
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
