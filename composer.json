@@ -19,7 +19,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-gd": "*",
-        "php-ffmpeg/php-ffmpeg": "^0.13.0"
+        "php-ffmpeg/php-ffmpeg": "^0.11.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5"
