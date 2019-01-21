@@ -113,14 +113,16 @@ class Request extends Model
 		{
 			$response = $api->getClient()->send($request, ['timeout' => 25]);
 			
-			$json = json_decode($response->getBody()->getContents(), true);
+			$data = $response->getBody()->getContents();
+			
+			$json = json_decode($data, true);
 			
 			if (json_last_error() == JSON_ERROR_NONE)
 			{
 				return Response::fromArray($json, $responseClass);
 			}
 			
-			throw new \Exception($response->getBody()->getContents());
+			throw new \Exception($data);
 		}
 		catch (\Exception $e)
 		{
