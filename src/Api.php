@@ -7,11 +7,9 @@ namespace BaleBot;
 use BaleBot\Model\GetFileUploadUrl;
 use BaleBot\Model\Helper\PhotoHelper;
 use BaleBot\Model\Helper\VideoHelper;
-use BaleBot\Model\Message\Text;
 use BaleBot\Model\SendPhotoMessage;
 use BaleBot\Model\SendTextMessage;
 use BaleBot\Model\SendVideoMessage;
-use BaleBot\Model\Thumb;
 use BaleBot\Response\FileUrlResponse;
 use BaleBot\Response\SendMessageResponse;
 use GuzzleHttp\Client;
@@ -19,7 +17,7 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class Api
 {
-	const URL = "https://apitest.bale.ai/v1/bots/http/";
+	const URL = "https://apitest.bale.ai/v1/bots/http/sendMessage/";
 	
 	private $_token;
 	
@@ -97,7 +95,7 @@ class Api
 		{
 			$message->message->caption->text = $caption;
 		}
-		echo Request::make('messaging', $message)->asJson();
+		
 		return Request::make('messaging', $message)->response($this, SendMessageResponse::class)->body;
 	}
 	
@@ -128,7 +126,7 @@ class Api
 		{
 			$message->message->caption->text = $caption;
 		}
-		echo Request::make('messaging', $message)->asJson();
+		
 		return Request::make('messaging', $message)->response($this, SendMessageResponse::class)->body;
 	}
 	
@@ -144,9 +142,9 @@ class Api
 		$upload->size = filesize($filename);
 		
 		$uploadUrl = Request::make('files', $upload)->response($this, FileUrlResponse::class)->body;
-		var_dump($uploadUrl);
-		$r = $this->putFile($uploadUrl, $filename);
 		
+		$r = $this->putFile($uploadUrl, $filename);
+		// #todo check $r return value
 		return $uploadUrl;
 	}
 	

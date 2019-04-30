@@ -33,8 +33,8 @@ End with an example of getting some data out of the system or using it for a lit
 ## Example
 ```php
 $api->sendTextMessage('Message','to channel name without at sign')
-$api->sendPhotoMessage('filepath,'to channel name without at sign','Caption')
-$api->sendVideoMessage('filepath,'to channel name without at sign','Caption')
+$api->sendPhotoMessage($filepath,'to channel name without at sign','Caption')
+$api->sendVideoMessage($filepath,'to channel name without at sign','Caption')
 ```
 
 ## Contributing

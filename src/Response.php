@@ -57,7 +57,7 @@ class Response extends Model
 	public static function fromArray($data, $body = null)
 	{
 		$request = parent::fromArray($data);
-		
+		/* @var $request Response */
 		if ($body)
 		{
 			$request->_attributes['body'] = new $body($request->_attributes['body']);
